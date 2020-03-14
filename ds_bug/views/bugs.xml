@@ -1,12 +1,16 @@
 <odoo>
     <data>
         <!--视图数据都是存储在数据库的“ir.ui.view”模型中的，
-        若要向这个模型中新增自建的视图，则需要我们在XML文件中使用<record>元素。系统会在模块安装后解析这些XML文件，
+        若要向这个模型中新增自建的视图，则需要我们在XML文件中使用<record>元素。
+        系统会在模块安装后解析这些XML文件，
         将<record>元素中的内容插入到模型中。-->
-        <record model="ir.ui.view" id="da_bug_list">
+        <record model="ir.ui.view" id="ds_bug_list">
             <field name="name">bug列表</field>
             <field name="model">ds_bug</field>
-            <!--arch元素内部包含的类型可以是树形/列表、表单或搜索等，因为arch包含的内容是XML，所以其后面的type=因为arch包含的内容是XML，所以其后面的type="xml"是必需的。-->
+            <!--arch元素内部包含的类型可以是树形/列表、表单或搜索等，
+            因为arch包含的内容是XML，
+            所以其后面的type=因为arch包含的内容是XML，
+            所以其后面的type="xml"是必需的。-->
             <field name="arch" type="xml">
                 <tree>
                     <!--name与ds_bug模型一致-->
@@ -16,12 +20,97 @@
                 </tree>
             </field>
         </record>
+        <record model="ir.ui.view" id="ds_bug_form">
+            <field name="name">bug表单</field>
+            <field name="model">ds_bug</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="do_close" type="object" string="关闭bug"/>
+                    </header>
+                    <sheet>
+                        <group name="group_top" col="2">
+                            <group name="group_left">
+                                <field name="name"/>
+                                <field name="user_id"/>
+                                <field name="is_closed"/>
+                            </group>
+                            <group name="group_right">
+                                <field name="close_reason"/>
+                                <field name="follower_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="详细内容">
+                                <field name="detail"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="ds_bug_search">
+            <field name="name">bug搜索</field>
+            <field name="model">ds_bug</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="is_closed"/>
+                    <field name="user_id"/>
+                </search>
+            </field>
+        </record>
+        <!--业务文档表单视图-->
+        <!--header-->
+        <!--        <record model="ir.ui.view" id="ds_bug_form">-->
+        <!--            <field name="name">bug表单</field>-->
+        <!--            <field name="model">ds_bug</field>-->
+        <!--            <field name="arch" type="xml">-->
+        <!--                <form>-->
+        <!--                    &lt;!&ndash;header：出现在表单的上方，我们在里面放了一个按钮，-->
+        <!--                    按钮的type是按钮操作的类型，-->
+        <!--                    name对应于未来后台的方法，点击后即可关闭当前bug。&ndash;&gt;-->
+        <!--                    <header>-->
+        <!--                        &lt;!&ndash;在表单视图上新建一个按钮,按钮的具体动作是do_close&ndash;&gt;-->
+        <!--                        <button name="do_close" type="object" string="关闭bug"/>-->
+        <!--                    </header>-->
+        <!--                    &lt;!&ndash;sheet：包含了表单视图的主体部分，-->
+        <!--                    里面的元素用于进行页面上字段的分组，-->
+        <!--                    可以看到“group_top”的组设定col属性为2，-->
+        <!--                    证明该组整体上分为两列，所以里面又分为左右两个子组。-->
+        <!--                    页面的底部考虑到详细内容比较多，-->
+        <!--                    所以使用了<notebook>。&ndash;&gt;-->
+        <!--                    <sheet>-->
+        <!--                        <group name="group_top" col="2">-->
+        <!--                            <group name="group_left">-->
+        <!--                                <field name="name"/>-->
+        <!--                                <field name="user_id"/>-->
+        <!--                                <field name="is_closed"/>-->
+        <!--                            </group>-->
+        <!--                            <group name="group_right">-->
+        <!--                                <field name="close_reason"/>-->
+        <!--                                <field name="follower_id"/>-->
+        <!--                            </group>-->
+        <!--                        </group>-->
+        <!--                        <netobook>-->
+        <!--                            <page string="详细内容">-->
+        <!--                                <field name="detail"/>-->
+        <!--                            </page>-->
+        <!--                        </netobook>-->
+        <!--                    </sheet>-->
+        <!--                </form>-->
+        <!--            </field>-->
+        <!--        </record>-->
         <!-- actions opening views on models 窗口动作-->
         <!--所有的窗口动作都存储在数据库的“ir.actions.act_window”模型-->
         <!--重要的属性-->
         <!--·model属性标示该元素为窗口动作，标明本记录要插入的模型。-->
-        <!--·id属性必须在整个Odoo应用中唯一，如果不唯一则会在安装时报错，即便与之发生冲突的id所在的模块还没有安装也会报错。而且id的命名规则是最多只能有一个点（.）。-->
-        <!--·字段列表中的res_model代表视图取数的模型；view_mode代表按顺序展示的视图类型。-->
+        <!--·id属性必须在整个Odoo应用中唯一，
+        如果不唯一则会在安装时报错，
+        即便与之发生冲突的id所在的模块还没有安装也会报错。
+        而且id的命名规则是最多只能有一个点（.）。-->
+        <!--·字段列表中的res_model代表视图取数的模型；
+        view_mode代表按顺序展示的视图类型。-->
 
         <record model="ir.actions.act_window" id="ds_bug_action_window">
             <field name="name">ds_bug window</field>
@@ -33,6 +122,7 @@
         <!-- menu catagories-->
         <menuitem name="bug管理" id="ds_bug_menu_1" parent="ds_bug_menu_root"/>
         <!--actions-->
-        <menuitem name="bug列表" id="ds_bug_menu_1_list" parent="ds_bug_menu_1" action="ds_bug_action_window"/>
+        <menuitem name="bug列表" id="ds_bug_menu_1_list" parent="ds_bug_menu_1"
+                  action="ds_bug_action_window"/>
     </data>
 </odoo>
