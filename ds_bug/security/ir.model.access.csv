@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_ds_bug_ds_bug,ds_bug.ds_bug,model_ds_bug,,1,1,1,1
+access_ds_bug_ds_bug,ds_bug.ds_bug,model_ds_bug,base.group_user,1,1,1,1
