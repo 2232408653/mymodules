@@ -3,8 +3,7 @@
     'name': "ds_bug",
 
     'summary': """
-        个人使用学习
-    """,
+        个人使用学习""",
 
     'description': """
         bug管理系统
