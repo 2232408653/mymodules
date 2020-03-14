@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+        <!-- actions opening views on models 窗口动作-->
+        <!--所有的窗口动作都存储在数据库的“ir.actions.act_window”模型-->
+        <!--重要的属性-->
+        <!--·model属性标示该元素为窗口动作，标明本记录要插入的模型。-->
+        <!--·id属性必须在整个Odoo应用中唯一，如果不唯一则会在安装时报错，即便与之发生冲突的id所在的模块还没有安装也会报错。而且id的命名规则是最多只能有一个点（.）。-->
+        <!--·字段列表中的res_model代表视图取数的模型；view_mode代表按顺序展示的视图类型。-->
+
+        <record model="ir.actions.act_window" id="ds_bug_action_window">
+            <field name="name">ds_bug window</field>
+            <field name="res_model">ds_bug</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!--top menu item-->
+        <menuitem name="bug管理系统" id="ds_bug_menu_root" />
+        <!-- menu catagories-->
+        <menuitem name="bug管理" id="ds_bug_menu_1" parent="ds_bug_menu_root" />
+        <!--actions-->
+        <menuitem name="bug列表" id="ds_bug_menu_1_list" parent="ds_bug_menu_1" action="ds_bug_action_window" />
+    </data>
+</odoo>
