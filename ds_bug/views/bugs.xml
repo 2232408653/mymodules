@@ -1,5 +1,21 @@
 <odoo>
     <data>
+        <!--视图数据都是存储在数据库的“ir.ui.view”模型中的，
+        若要向这个模型中新增自建的视图，则需要我们在XML文件中使用<record>元素。系统会在模块安装后解析这些XML文件，
+        将<record>元素中的内容插入到模型中。-->
+        <record model="ir.ui.view" id="da_bug_list">
+            <field name="name">bug列表</field>
+            <field name="model">ds_bug</field>
+            <!--arch元素内部包含的类型可以是树形/列表、表单或搜索等，因为arch包含的内容是XML，所以其后面的type=因为arch包含的内容是XML，所以其后面的type="xml"是必需的。-->
+            <field name="arch" type="xml">
+                <tree>
+                    <!--name与ds_bug模型一致-->
+                    <field name="name"/>
+                    <field name="is_closed"/>
+                    <field name="user_id"/>
+                </tree>
+            </field>
+        </record>
         <!-- actions opening views on models 窗口动作-->
         <!--所有的窗口动作都存储在数据库的“ir.actions.act_window”模型-->
         <!--重要的属性-->
@@ -13,10 +29,10 @@
             <field name="view_mode">tree,form</field>
         </record>
         <!--top menu item-->
-        <menuitem name="bug管理系统" id="ds_bug_menu_root" />
+        <menuitem name="bug管理系统" id="ds_bug_menu_root"/>
         <!-- menu catagories-->
-        <menuitem name="bug管理" id="ds_bug_menu_1" parent="ds_bug_menu_root" />
+        <menuitem name="bug管理" id="ds_bug_menu_1" parent="ds_bug_menu_root"/>
         <!--actions-->
-        <menuitem name="bug列表" id="ds_bug_menu_1_list" parent="ds_bug_menu_1" action="ds_bug_action_window" />
+        <menuitem name="bug列表" id="ds_bug_menu_1_list" parent="ds_bug_menu_1" action="ds_bug_action_window"/>
     </data>
 </odoo>
