@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import http
-
+'''
+'''
 # class DsBug(http.Controller):
 #     @http.route('/ds_bug/ds_bug/', auth='public')
 #     def index(self, **kw):
