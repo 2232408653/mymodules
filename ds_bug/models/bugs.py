@@ -38,3 +38,11 @@ class bug(models.Model):
     注:
     name字段是模型里面的特殊字段，在默认情况下该字段的值可用来在搜索和引用时代表一行记录。
     '''
+    '''
+    业务逻辑
+    '''
+    @api.multi
+    def do_close(self):
+        for item in self:
+            item.is_closed = True
+        return True
