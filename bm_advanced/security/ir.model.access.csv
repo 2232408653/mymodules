@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_bm_advanced_bm_advanced,bm_advanced.bm_advanced,model_bm_advanced_bm_advanced,,1,0,0,0
