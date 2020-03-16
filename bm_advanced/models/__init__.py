@@ -1,3 +1,5 @@
 # -*- coding: utf-8 -*-
 
 from . import models
+from . import bug_tag
+from . import bug_stage

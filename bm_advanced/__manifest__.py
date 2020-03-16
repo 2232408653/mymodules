@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "bm_advanced",
+    'name': "bug管理系统升级版",
 
     'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+    管理测试过程中发现的bug
+    """,
 
     'description': """
-        Long description of module's purpose
+        管理测试过程中发现的bug
     """,
 
     'author': "My Company",
@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['ds_bug','mail'],
 
     # always loaded
     'data': [
