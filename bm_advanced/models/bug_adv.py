@@ -14,3 +14,6 @@ class bugAdvance(models.Model):
     need_time = fields.Integer('所需时间(小时)')
     # 为ds_bug类的name字段增加help属性
     name = fields.Char(help='简要描述发现的bug')
+
+    stage_id = fields.Many2one('bm.bug_tag','阶段')
+    tag_ids = fields.Many2many('bm.bug_tag', string='标示')

@@ -83,4 +83,6 @@ class bugStage(models.Model):
     parent_id、parent_left、parent_right：Integer类型，
         在层级关系中具有特殊的意义。本章后续会具体介绍层级关系。
     '''
+    bug_ids = fields.One2many('ds_bug', 'stage_id', sting='bug')
+    bug_ids = fields.Many2many('ds_bug', string='bug')
     
