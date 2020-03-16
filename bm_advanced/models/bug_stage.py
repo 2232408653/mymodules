@@ -16,7 +16,8 @@ class bugStage(models.Model):
     列表内通过元组来标示每一行的选项。
     String是前端展示时的字段描述。
     '''
-    status = fields.Selection([('wating','未开始'),('doing','进行中'),('closed','关闭'),('rework','重测未通过')],'状态')
+    status = fields.Selection([('wating','未开始'),('doing','进行中'),
+                               ('closed','关闭'),('rework','重测未通过')],'状态')
     document =fields.Html('文档')
     sequence = fields.Integer('Sequence')
     precent_pro = fields.Float('进度',(3,2))
@@ -85,4 +86,30 @@ class bugStage(models.Model):
     '''
     bug_ids = fields.One2many('ds_bug', 'stage_id', sting='bug')
     bug_ids = fields.Many2many('ds_bug', string='bug')
-    
+    '''
+首先来介绍many2one的关系。
+    many2one在本例中使用了两个位置参数，
+        第一个是与本模型关联的另一个模型的名称，
+        可以使用参数关键字comodel直接赋值；
+        第二个是本关系字段的描述，可以使用参数关键字string直接赋值。
+        当我们在模型中使用该方法声明一个关系字段时，后台数据库会生成一个外键字段。
+    其他几个可用参数
+        ondelete：该参数定义了删除关联记录时本字段的动作，
+            默认是set null，也就是说当关联记录被删除时本字段将被赋值为空。
+            第二个可以赋予的值是restricted，
+                若设置该值则关联记录被删除时会报错进而阻止关联字段被删除。
+            还有一个可选值是cascade，使用本值时关联字段若被删除则本记录也将被删除。
+        context：该参数是对前端使用具有实际意义的数据字典，
+            用于在进行关系导航时携带信息，比如设置默认值。
+            本参数在后续的章节中会有详细介绍。
+        domain：这是一个域表达式，在一个队列中可以使用元组设定查询条件以用于限定查询的数据，
+            具体使用会在后续章节详细介绍。
+        auto_join：该参数可用于帮助ORM引擎在执行查询时进行一个SQL关联。
+            如果使用，则其将会绕过访问安全规则，用户可以访问权限以外的数据，
+            这将造成很大的风险，不过这样做可以让数据查询更加灵活。
+    '''
+    '''
+many2many关系。
+    many2many类型在使用的时候其实可以很简洁，最少只需要一个关联模型名称的参数。
+        不过一般建议加上string描述参数。
+    '''
