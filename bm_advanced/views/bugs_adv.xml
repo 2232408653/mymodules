@@ -2,7 +2,7 @@
     <data>
         <record model="ir.ui.view" id="bug_form2">
             <field name="name">bug表单2</field>
-            <field name="model">ds_bug.ds_bug</field>
+            <field name="model">ds_bug</field>
             <field name="inherit_id" ref="ds_bug.ds_bug_form" />
             <field name="arch" type="xml">
                 <field name="follower_id" position="after">
