@@ -28,6 +28,7 @@
         'views/views.xml',
         'views/templates.xml',
         'views/bugs_adv.xml',
+        'views/bugs_stage.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
