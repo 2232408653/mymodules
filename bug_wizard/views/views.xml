@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="bug_wizard.list">
+      <field name="name">bug_wizard list</field>
+      <field name="model">bug_wizard.bug_wizard</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    -->
+
+    <!-- actions opening views on models -->
+    <!--
+    <record model="ir.actions.act_window" id="bug_wizard.action_window">
+      <field name="name">bug_wizard window</field>
+      <field name="res_model">bug_wizard.bug_wizard</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    -->
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="bug_wizard.action_server">
+      <field name="name">bug_wizard server</field>
+      <field name="model_id" ref="model_bug_wizard_bug_wizard"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="bug_wizard" id="bug_wizard.menu_root"/>
+    -->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="bug_wizard.menu_1" parent="bug_wizard.menu_root"/>
+    <menuitem name="Menu 2" id="bug_wizard.menu_2" parent="bug_wizard.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="bug_wizard.menu_1_list" parent="bug_wizard.menu_1"
+              action="bug_wizard.action_window"/>
+    <menuitem name="Server to list" id="bug_wizard" parent="bug_wizard.menu_2"
+              action="bug_wizard.action_server"/>
+    -->
+  </data>
+</odoo>
