@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
+import logging
+_logger=logging.getLogger(__name__)
 
 
 class bugWizard(models.TransientModel):
@@ -20,3 +22,17 @@ class bugWizard(models.TransientModel):
         defaults=super(bugWizard,self).default_get(fields_names)
         defaults['bug_ids']=self.env.context['active_ids']
         return defaults
+    @api.multi
+    def update_batch(self):
+        self.ensure_one()
+        if not (self.new_is_closed or self.wizard_user_id):
+            raise exceptions.ValidationError('无数据要更新')
+        _logger.debug('批量bug更新操作 %s',self.bug_ids.ids)
+        vals={}
+        if self.new_is_closed:
+            vals['is_closed']=self.new_is_closed
+        if self.wizard_user_id:
+            vals['user_id']=self.wizard_user_id
+        if vals:
+            self.bug_ids.write(vals)
+        return True
