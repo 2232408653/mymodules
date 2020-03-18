@@ -8,7 +8,7 @@ _logger=logging.getLogger(__name__)
 class bugWizard(models.TransientModel):
     _name = 'bug_wizard'
     bug_ids = fields.Many2many('ds_bug', string='Bug')
-    new_is_closed = fields.Many2one('res.users',string='负责人')
+    new_is_closed = fields.Boolean('是否关闭')
     wizard_user_id = fields.Many2one('res.users', string='负责人')
     ''':arg
     我们可以借助context来完成default_get()方法。当视图的一些元素发生一些动作时，
