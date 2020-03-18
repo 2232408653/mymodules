@@ -27,6 +27,12 @@ class BugAdvanced(models.Model):
     在onchange方法中，参数self代表的是包含了form所有可编辑字段的单一记录，
     我们可以对这些字段进行操作。
     一般来说，onchange可以非常方便地根据一些字段的变化对其他字段进行进一步的赋值等操作。
+    onchange方法不需要返回任何参数，不过我们可以选择通过返回一个字典来返回一个warning或者domain。
+    warning关键字应该给出一个信息用于返回到弹出对话框，比如：
+    1.    {'title': 'Message Title', 'message': 'Message Body'}  
+    domain关键字可以修改字段的domain属性，这样做会提高用户使用时的友好性，
+    比如，我们在选择关注者的时候，可以仅允许用户从联系人中选择教师，写出来形式大概如下：
+    1.    {'follower_id': [('x_is_teacher', '=', True)]}  
     '''
 # # -*- coding: utf-8 -*-
 #
