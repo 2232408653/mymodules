@@ -25,7 +25,7 @@
                         </group>
                         <footer>
                             <button type="object" name="update_batch" string="批量更新" class="oe_hightlight"
-                                    atts="{'invisible':[('new_is_closed','=',False),('wizard_user_id','=',False)]}" />
+                                    attrs="{'invisible':[('new_is_closed','=',False),('wizard_user_id','=',False)]}" />
                         </footer>
                     </group>
                 </form>
