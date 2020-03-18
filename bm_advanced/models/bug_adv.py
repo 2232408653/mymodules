@@ -10,6 +10,16 @@ class BugAdvanced(models.Model):
     name=fields.Char(help='简要描述发现的bug')
     stage_id=fields.Many2one('bm_bug_stage','阶段')
     tag_ids=fields.Many2many('bm_bug_tag',string='标示')
+    @api.onchange('user_id')
+    def user_follower_ref(self):
+        if not self.user_id:
+            self.follower_id = None
+        return{
+            'warning':{
+                'title':'无负责人',
+                'message':'关注者也被清空'
+            }
+        }
 # # -*- coding: utf-8 -*-
 #
 # from odoo import models, fields, api
