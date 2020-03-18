@@ -56,3 +56,29 @@ class bugWizard(models.TransientModel):
         if vals:
             self.bug_ids.write(vals)
         return True
+    @api.multi
+    def count_bugs(self):
+        bug=self.env['ds_bug']
+        count = bug.search_count([])
+        raise exceptions.Warning('有%d条bug'%count)
+
+    @api.multi
+    def helper_form(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,  # this model
+            'res_id': self.id,  # the current wizard record
+            'view_type': 'form',
+            'view_mode': 'form',
+            'target': 'new'}
+
+    @api.multi
+    def get_bugs(self):
+        self.ensure_one()
+        bug = self.env['ds_bug']
+        all_bugs = bug.search([('is_closed', '=', False)])
+        # Fill the wizard Task list with all tasks
+        self.bug_ids = all_bugs
+        # reopen wizard form on same wizard record
+        return self.helper_form()
