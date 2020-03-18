@@ -27,6 +27,13 @@
                     <footer>
                         <button type="object" name="update_batch" string="批量更新" class="oe_highlight"
                                 attrs="{'invisible':[('new_is_closed','=',False),('wizard_user_id','=',False)]}"/>
+                        <!--注意左下角的批量更新按钮，
+                        只有当负责人或者是否关闭两个按钮有一个被赋值时，
+                        批量更新按钮才会出现，
+                        这就是上面XML中的attrs属性的作用。-->
+                        <!--不过请注意在上面的对话窗口中，并没有出现我们在上一步选择的那条记录。
+                        如果想将刚才选中的记录展现在新窗口中，那也不难做到，只需要使用default_get()方法即可。
+                        后文中将会演示如何使用这些方法。-->
                     </footer>
                 </form>
             </field>
