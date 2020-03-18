@@ -9,7 +9,7 @@ class bugWizard(models.TransientModel):
     _name = 'bug_wizard'
     bug_ids = fields.Many2many('ds_bug', string='Bug')
     new_is_closed = fields.Boolean('是否关闭')
-    wizard_user_id = fields.Many2one('res.users', string='负责人')
+    wizard_user_id=fields.Many2one('res.users',string='负责人')
     ''':arg
     我们可以借助context来完成default_get()方法。当视图的一些元素发生一些动作时，
     比如点击或跳转，这些元素将被添加到context字典中，常用的元素具体如下。
@@ -50,9 +50,9 @@ class bugWizard(models.TransientModel):
         _logger.debug('批量bug更新操作 %s',self.bug_ids.ids)
         vals={}
         if self.new_is_closed:
-            vals['is_closed']=self.new_is_closed
+            vals['is_closed'] = self.new_is_closed
         if self.wizard_user_id:
-            vals['user_id']=self.wizard_user_id
+            vals['user_id'] = self.wizard_user_id.id
         if vals:
             self.bug_ids.write(vals)
         return True
