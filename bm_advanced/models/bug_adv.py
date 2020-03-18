@@ -20,6 +20,10 @@ class BugAdvanced(models.Model):
                 'message':'关注者也被清空'
             }
         }
+    ''':arg
+    本例中，我们使用@api.onchange装饰器来绑定follower_id和user_id之间的处理逻辑，
+    这样就可以监控user_id的变化来触发对follower_id的动作。
+    需要注意的是，这个方法的具体名字与方法的触发没有直接关联性，Odoo主要是通过方法的装饰器来找到方法的。'''
 # # -*- coding: utf-8 -*-
 #
 # from odoo import models, fields, api
