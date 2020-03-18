@@ -23,7 +23,11 @@ class BugAdvanced(models.Model):
     ''':arg
     本例中，我们使用@api.onchange装饰器来绑定follower_id和user_id之间的处理逻辑，
     这样就可以监控user_id的变化来触发对follower_id的动作。
-    需要注意的是，这个方法的具体名字与方法的触发没有直接关联性，Odoo主要是通过方法的装饰器来找到方法的。'''
+    需要注意的是，这个方法的具体名字与方法的触发没有直接关联性，Odoo主要是通过方法的装饰器来找到方法的。
+    在onchange方法中，参数self代表的是包含了form所有可编辑字段的单一记录，
+    我们可以对这些字段进行操作。
+    一般来说，onchange可以非常方便地根据一些字段的变化对其他字段进行进一步的赋值等操作。
+    '''
 # # -*- coding: utf-8 -*-
 #
 # from odoo import models, fields, api
