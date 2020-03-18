@@ -2,15 +2,16 @@
 
 from odoo import models, fields, api
 
+
 class bug(models.Model):
     _name = "ds_bug"
     _description = "bug"
-    name = fields.Char('bug简述',required=True)
+    name = fields.Char('bug简述', required=True)
     detail = fields.Text(size=150)
     is_closed = fields.Boolean("是否关闭")
-    close_reason = fields.Selection([('changed','已修改'),('cannot','无法修改'),('delay','推迟')],string='关闭理由')
-    user_id = fields.Many2one('res.users',string='负责人')
-    follower_id = fields.Many2one('res.partner',string="关注者")
+    close_reason = fields.Selection([('changed', '已修改'), ('cannot', '无法修改'), ('delay', '推迟')], string='关闭理由')
+    user_id = fields.Many2one('res.users', string='负责人')
+    follower_id = fields.Many2one('res.partner', string="关注者")
     '''
     _name:类的唯一标识字段,其它类可以通过此字段引用本类
     _description:类似于标签,提高查询的友好性

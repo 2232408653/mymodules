@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api
 
+
 class bugTag(models.Model):
     _name = 'bm_bug_tag'
     _description = "bug标识"

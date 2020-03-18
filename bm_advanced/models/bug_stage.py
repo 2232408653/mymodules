@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api
 
+
 class bugStage(models.Model):
     _name = 'bm_bug_stage'
     _description = 'bug阶段'
@@ -16,11 +17,11 @@ class bugStage(models.Model):
     列表内通过元组来标示每一行的选项。
     String是前端展示时的字段描述。
     '''
-    status = fields.Selection([('wating','未开始'),('doing','进行中'),
-                               ('closed','关闭'),('rework','重测未通过')],'状态')
-    document =fields.Html('文档')
+    status = fields.Selection([('wating', '未开始'), ('doing', '进行中'),
+                               ('closed', '关闭'), ('rework', '重测未通过')], '状态')
+    document = fields.Html('文档')
     sequence = fields.Integer('Sequence')
-    precent_pro = fields.Float('进度',(3,2))
+    precent_pro = fields.Float('进度', (3, 2))
     '''
     Float（string，digits）：string仍然是前端显示时该字段的描述，
     digits是一个元组，
@@ -28,9 +29,9 @@ class bugStage(models.Model):
     后面的数字则代表小数精度。
     '''
     deadline = fields.Date('最晚解决日期')
-    creat_on = fields.Datetime('创建时间',default=lambda self:fields.Datetime.now())
+    creat_on = fields.Datetime('创建时间', default=lambda self: fields.Datetime.now())
     delay = fields.Boolean('是否延误')
-    image=fields.Binary('图片')
+    image = fields.Binary('图片')
     '''
     常用的字段属性关键字
     string：前端展现时的字段描述属性，

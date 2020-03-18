@@ -2,24 +2,27 @@
 
 from odoo import models, fields, api
 
+
 class BugAdvanced(models.Model):
-    _inherit='ds_bug'
-    #进阶模型当中新增一个所需时间字段
-    need_time=fields.Integer('所需时间(小时)')
-    #给bm.bug类的name字段增加help属性
-    name=fields.Char(help='简要描述发现的bug')
-    stage_id=fields.Many2one('bm_bug_stage','阶段')
-    tag_ids=fields.Many2many('bm_bug_tag',string='标示')
+    _inherit = 'ds_bug'
+    # 进阶模型当中新增一个所需时间字段
+    need_time = fields.Integer('所需时间(小时)')
+    # 给bm.bug类的name字段增加help属性
+    name = fields.Char(help='简要描述发现的bug')
+    stage_id = fields.Many2one('bm_bug_stage', '阶段')
+    tag_ids = fields.Many2many('bm_bug_tag', string='标示')
+
     @api.onchange('user_id')
     def user_follower_ref(self):
         if not self.user_id:
             self.follower_id = None
-        return{
-            'warning':{
-                'title':'无负责人',
-                'message':'关注者也被清空'
+        return {
+            'warning': {
+                'title': '无负责人',
+                'message': '关注者也被清空'
             }
         }
+
     ''':arg
     本例中，我们使用@api.onchange装饰器来绑定follower_id和user_id之间的处理逻辑，
     这样就可以监控user_id的变化来触发对follower_id的动作。

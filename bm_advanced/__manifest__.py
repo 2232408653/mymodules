@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['ds_bug','mail'],
+    'depends': ['ds_bug', 'mail'],
 
     # always loaded
     'data': [

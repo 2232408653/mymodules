@@ -4,11 +4,11 @@
             <field name="name">关注者</field>
             <field name="model">res.partner</field>
             <!--视图继承所必需的，其标明了是继承自哪个视图-->
-            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
                 <!--元素定义说明新插入的字段将会出现在本字段之后-->
                 <field name="mobile" position="after">
-                    <field name="bug_ids" />
+                    <field name="bug_ids"/>
                 </field>
             </field>
         </record>
@@ -17,8 +17,8 @@
             <field name="res_model">res.partner</field>
             <field name="view_mode">form,tree</field>
         </record>
-        <menuitem name="关注者列表" id="ds_bug_menu_2" parent="ds_bug_menu_root" />
+        <menuitem name="关注者列表" id="ds_bug_menu_2" parent="ds_bug_menu_root"/>
         <menuitem name="关注者" id="ds_bug_menu_2_form"
-                  parent="ds_bug_menu_2" action="ds_bug.followe_action_window" />
+                  parent="ds_bug_menu_2" action="ds_bug.followe_action_window"/>
     </data>
 </odoo>
