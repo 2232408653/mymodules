@@ -2,14 +2,15 @@
 
 from odoo import models, fields, api, exceptions
 import logging
-_logger=logging.getLogger(__name__)
+
+_logger = logging.getLogger(__name__)
 
 
 class bugWizard(models.TransientModel):
     _name = 'bug_wizard'
     bug_ids = fields.Many2many('ds_bug', string='Bug')
     new_is_closed = fields.Boolean('是否关闭')
-    wizard_user_id=fields.Many2one('res.users',string='负责人')
+    wizard_user_id = fields.Many2one('res.users', string='负责人')
     ''':arg
     我们可以借助context来完成default_get()方法。当视图的一些元素发生一些动作时，
     比如点击或跳转，这些元素将被添加到context字典中，常用的元素具体如下。
@@ -17,17 +18,20 @@ class bugWizard(models.TransientModel):
         active_id：如果是表单视图则记录活跃状态的记录ID，如果是列表视图则记录第一条记录的ID。
         active_ids：列表视图所有活跃状态的记录ID，如果是表单视图则只记录一个元素。
     '''
+
     @api.model
     def default_get(self, fields_names):
-        defaults=super(bugWizard,self).default_get(fields_names)
-        defaults['bug_ids']=self.env.context['active_ids']
+        defaults = super(bugWizard, self).default_get(fields_names)
+        defaults['bug_ids'] = self.env.context['active_ids']
         return defaults
+
     '''
     该方法每次处理一个向导实例，所以使用了self.ensure_one()方法。此处的self代表了在向导视图中正在浏览的记录。
     方法首先验证了在向导窗口中是否有负责人或是否关闭的新值，如果没有则会报错，事实上若两个值都没有的话，
     那么此批量更新按钮就不会出现。然后用字典存储两个字段的值，使用模型的写入方法一次性写入。
     方法的最后会返回一个True值，虽然这不是必需的，但读者最好养成这种代码书写习惯。
     '''
+
     @api.multi
     def update_batch(self):
         self.ensure_one()
@@ -47,8 +51,8 @@ class bugWizard(models.TransientModel):
            3.    _logger.warning('WARNING信息')  
            4.    _logger.error('ERROR信息')   
         '''
-        _logger.debug('批量bug更新操作 %s',self.bug_ids.ids)
-        vals={}
+        _logger.debug('批量bug更新操作 %s', self.bug_ids.ids)
+        vals = {}
         if self.new_is_closed:
             vals['is_closed'] = self.new_is_closed
         if self.wizard_user_id:
@@ -56,11 +60,12 @@ class bugWizard(models.TransientModel):
         if vals:
             self.bug_ids.write(vals)
         return True
+
     @api.multi
     def count_bugs(self):
-        bug=self.env['ds_bug']
+        bug = self.env['ds_bug']
         count = bug.search_count([])
-        raise exceptions.Warning('有%d条bug'%count)
+        raise exceptions.Warning('有%d条bug' % count)
 
     @api.multi
     def helper_form(self):
