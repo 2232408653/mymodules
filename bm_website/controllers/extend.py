@@ -4,9 +4,16 @@ from odoo import http
 import importlib
 Main = importlib.import_module("odoo.addons.bm_website.controllers.controllers").Main
 class MainExtended(Main):
+
     @http.route()
     def hello(self, name=None, **kwargs):
         response = super(MainExtended, self).hello()
         response.qcontext['name'] = name
         #print(name)
+        return response
+    @http.route(['/hello','/hello/<name>'])
+    def hello(self,name=None,**kwargs):
+        response = super(MainExtended, self).hello()
+        response.qcontext['name'] = name
+        # print(name)
         return response
