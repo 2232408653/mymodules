@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 from odoo import http
+from odoo.http import request
 
 
 class Main(http.Controller):
     @http.route('/helloworld', auth='public')
     def hello_world(self):
         return ('<h1>Hello World!</h1>')
+    @http.route('/hello',auth='public')
+    def hello(self,**kwargs):
+        return request.render('bm_website.hello')
 
 # class BmWebsite(http.Controller):
 #     @http.route('/bm_website/bm_website/', auth='public')
