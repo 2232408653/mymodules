@@ -1,0 +1,39 @@
+<odoo>
+    <data>
+        <record id="view_form_bug_ui" model="ir.ui.view">
+            <field name="model">ds_bug</field>
+            <field name="priority">15</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <!--按钮、状态等组件-->
+                        <!--文章的头部（header）通常包含文档的生命周期或步骤以及相关的操作按钮。
+                这些操作按钮是常规表单的按钮，可以使用class="oe_highlight"突出显示最重要的阶段或步骤。
+                文档的生命周期在字段上是使用statusbar元素，该元素表示文档在当前所在的生命周期中的点。
+                        这通常是状态（State）选择字段或阶段（Stage）多对一字段。
+                        这两个字段可以在多个Odoo核心模块中找到。
+                        Stage是一个多对一的字段，它的原理是后台可使用支持模型来设置流程的各个步骤。
+                        因此，最终用户可以动态配置它以适应其特定的业务流程，其能够非常完美地支持看板。
+                        State是一个选择列表，其包含一个过程中相当稳定的步骤，
+                        如新建、处理中和完成。最终用户无法配置它，但由于它是静态的，
+                        因此在业务逻辑中使用起来要容易得多。
+                        视图字段甚至对State提供了特殊支持：
+                            states字段属性允许仅在记录处于某些状态时才可供用户使用。
+                        回归Odoo的历史，Stage的引入要晚于State。
+                        目前两者都可以使用，不过从Odoo核心模块的源码来看，趋势是Stage取代State。
+                        但是，如前面所解释的，State仍然能提供Stage不具备的某些功能。
+                        将Stage映射到State，可以产生一加一大于二的效果。-->
+                    </header>
+                    <sheet>
+                        <!--表单主体内容-->
+                    </sheet>
+                    <!--联系组件-->
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" />
+                        <field name="message_ids" widget="mail_thread" />
+                    </div>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
