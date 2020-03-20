@@ -1,13 +1,14 @@
 from odoo import http
 from odoo.http import request
 
+
 class Main(http.Controller):
     @http.route('/helloworld', auth='public')
     def hello_world(self):
         return ('<h1>Hello World!</h1>')
 
-    @http.route('/hello',auth='public')
-    def hello(self,**kwargs):
+    @http.route('/hello', auth='public')
+    def hello(self, **kwargs):
         return request.render('bm_website.hello')
 
     @http.route('/bugs', auth='user', website=True)
@@ -17,6 +18,7 @@ class Main(http.Controller):
         return request.render(
             'bm_website.index',
             {'bugs': bugs})
+
     '''
     控制器检索要使用的数据并使其可用于呈现的模板。
     在这种情况下，控制器需要经过身份验证的会话，因为该路由具有auth='user'属性。

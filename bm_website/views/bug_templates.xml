@@ -1,44 +1,54 @@
 <odoo>
     <data>
-      <template id="assets_frontend"
-        name="bm_website_assets"
-        inherit_id="website.assets_frontend">
-          <xpath expr="." position="inside">
-            <link rel="stylesheet" type="text/css"
-                  href="/bm_website/static/src/css/index.css"/>
-          </xpath>
-      </template>
-      <template id="index" name="Bug List">
-          <!--t-call在website.layout模板中运行XML，
-          并将标记内的完整内容传递给它。
-          website.layout旨在呈现完整的网站页面，包括菜单、页眉、页脚等，
-          并将该内容放在适当的主区域中。-->
-          <t t-call="website.layout">
-            <div id="wrap" class="container">
-              <h1>Bug 列表</h1>
+        <template id="assets_frontend"
+                  name="bm_website_assets"
+                  inherit_id="website.assets_frontend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" type="text/css"
+                      href="/bm_website/static/src/css/index.css"/>
+            </xpath>
+        </template>
+        <template id="index" name="Bug List">
+            <!--t-call在website.layout模板中运行XML，
+            并将标记内的完整内容传递给它。
+            website.layout旨在呈现完整的网站页面，包括菜单、页眉、页脚等，
+            并将该内容放在适当的主区域中。-->
+            <t t-call="website.layout">
+                <div id="wrap" class="container">
+                    <h1>Bug 列表</h1>
 
-              <!-- bug列表 -->
-              <t t-foreach="bugs" t-as="bug">
-                <div class="row">
-                  <input type="checkbox" disabled="True"
-                    t-att-checked=" 'checked' if bug.is_closed else None" />
-                  <a t-attf-href="/bug/{{slug(bug)}}">
-                    <span t-field="bug.name"
-                      t-att-class="'bug-done' if bug.is_closed
-                                    else ''" />
-                  </a>
+                    <!-- bug列表 -->
+                    <t t-foreach="bugs" t-as="bug"><!--使用了t-foreach指令迭代任务记录集。-->
+                        <div class="row">
+                            <!--有一个复选框输入，并希望检查任务是否完成。
+                            在HTML中，可以根据是否具有checked属性的复选框来进行检查。
+                            为此，我们使用t-att-NAME指令根据表达式动态呈现checked属性。
+                            当表达式求值为None（或者任何其他false值）时，QWeb将省略该属性。-->
+                            <input type="checkbox" disabled="True"
+                                   t-att-checked=" 'checked' if bug.is_closed else None"/>
+                            <!--t-attf指令用于动态创建URL以打开每个特定bug的详细信息表单。
+                            这里使用特殊函数slug()为每条记录生成一个人类可读的URL。
+                            该链接暂时不起作用，因为我们还没有创建相应的控制器。-->
+                            <a t-attf-href="/bug/{{slug(bug)}}">
+                                <!--在每个bug中，我们还要使用t-att指令仅为已完成的bug设置bug-done样式。-->
+                                <span t-field="bug.name"
+                                      t-att-class="'bug-done' if bug.is_closed
+                                    else ''"/>
+                            </a>
+                        </div>
+                    </t>
+
+                    <!-- 创建新bug
+                    一个创建按钮可用于打开一个带有表单的页面，以创建一个新的bug。
+                    我们将在后面的部分中实现它，并介绍Web表单处理。-->
+                    <div class="row">
+                        <a href="/bug/add" class="btn btn-primary btn-lg">
+                            创建
+                        </a>
+                    </div>
+
                 </div>
-              </t>
-
-              <!-- 创建新bug -->
-              <div class="row">
-                <a href="/bug/add" class="btn btn-primary btn-lg">
-                    创建
-                </a>
-              </div>
-
-            </div>
-          </t>
-      </template>
+            </t>
+        </template>
     </data>
 </odoo>

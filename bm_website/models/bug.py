@@ -1,5 +1,6 @@
-from odoo import api, models,fields
+from odoo import api, models, fields
 from odoo.exceptions import ValidationError
+
 
 class Bug(models.Model):
     _inherit = 'ds_bug'

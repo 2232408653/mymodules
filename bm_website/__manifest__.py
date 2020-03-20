@@ -19,7 +19,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['bm_advanced','website_form'],
+    'depends': ['bm_advanced', 'website_form'],
 
     # always loaded
     'data': [
