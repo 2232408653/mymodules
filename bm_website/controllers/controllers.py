@@ -11,6 +11,7 @@ class Main(http.Controller):
     def hello(self,**kwargs):
         return request.render('bm_website.hello')
 
+
 # class BmWebsite(http.Controller):
 #     @http.route('/bm_website/bm_website/', auth='public')
 #     def index(self, **kw):

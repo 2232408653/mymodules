@@ -17,3 +17,8 @@ class MainExtended(Main):
         response.qcontext['name'] = name
         # print(name)
         return response
+
+    @http.route('/hellocms/<page>', auth='public')
+    def hello(self, page, **kwargs):
+        print(page)
+        return http.request.render(page)
