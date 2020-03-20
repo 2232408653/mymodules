@@ -23,6 +23,26 @@
                         目前两者都可以使用，不过从Odoo核心模块的源码来看，趋势是Stage取代State。
                         但是，如前面所解释的，State仍然能提供Stage不具备的某些功能。
                         将Stage映射到State，可以产生一加一大于二的效果。-->
+                        <field name="stage" invisible="True" />
+                        <button name="do_close" type="object" string="关闭" attrs="{'invisible':[('stage','in',['draft'])]}"
+                                class="oe_highlight" />
+                        <field name="stage_id"
+                               widget="stage_id"
+                               clickable="True"
+                               options="{'fold_field':'fold'}" />
+                        <!--在这里，我们在状态栏中添加一个关闭按钮，让用户关闭已完成的bug。attrs属性用于使此按钮仅对处于完成状态的bug可见。执行此操作的条件是使用状态字段，该字段将不会显示在表单上。但是，为了使可见性切换的条件起作用，需要在Web客户端用到加载的所有值。由于我们不打算让最终用户能够使用状态字段，因此我们需要将其添加为不可见字段。
+在项目中也需要注意，在domain或attrs表达式中使用的字段必须被加载到视图中，并且必须有一个<field>元素。如果不想让用户看到该字段，那么就将它们加载为一个不可见的字段元素。
+除了上面的显式切换方式，也可以选择使用states=“open，done”，这样就可以通过states字段属性而不是attrs来实现相同的效果。虽然它不像attrs属性那样灵活，但它更为简洁。
+attrs和states元素的可见性功能也可用于其他视图元素，如字段。这将在本章的后面进行深入探讨。
+接下来，添加状态栏组件以显示文档所在的阶段。其实在技术上，它就是为stage_id字段赋值statusbar的<field>元素。
+clickable属性允许用户通过单击状态栏来更改文档所处的阶段。我们一般都会启用此功能，但也有一些业务上不允许的情况，例如当我们需要对工作流程进行更多的控制，并要求用户仅使用可用的操作按钮来完成各个阶段时。也就是说有些时候我们需要经过特定的验证才会允许阶段的变化。
+当使用带有阶段的状态栏组件时，我们可以在更多阶段组中隐藏（折叠）很少使用的阶段。相应的阶段模型必须要有一个标志来配置需要隐藏的标记，其通常命名为fold。然后，状态栏组件应使用options属性（如上面的代码所示），以将此字段名称提供给fold_field选项。
+状态栏也可以与状态（state）而不是阶段（stage）一起使用。在这种情况下，要列出状态栏中可用的状态，应使用statusbar_visible属性而不是fold_field选项。如果将statusbar_visible用于bug表单，那么它的内容将如下所示：
+1.    <field name="state"
+2.      widget="statusbar"
+3.      clickable="True"
+4.      statusbar_visible="draft,open,done" />
+-->
                     </header>
                     <sheet>
                         <!--表单主体内容-->
