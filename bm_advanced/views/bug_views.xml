@@ -133,3 +133,74 @@ selection多对一字段使用的选项列表组件。
 ·priority将字段值以星级打分的形式展现。
 ·state_selection为看板状态的选项列表展示一个信号灯，正常用灰色表示、完成用绿色表示、其他用红色表示。
 -->
+<!--
+12.4　按钮
+按钮已在前面多次使用过，现在就来全面地查看一下按钮所支持的属性。
+·string是按钮的文本标签，或者使用图标时的HTML alt文本。
+·type是要执行的操作类型，可能的操作值包括如下两项：
+·object表示调用后台Python方法。
+·action表示要运行一个窗口动作。
+·name可根据所选的type类型标识要执行的对应操作：type为object时代表模型方法名称，type为action时则表示要运行的窗口动作的数据库ID。在加载视图时，%（xmlid）d公式可用于将XML ID转换为所需的数据库ID。
+·args在type为object时使用，其用于向后台方法传递参数。参数是依据记录ID提前生成的静态JSON参数。
+·context用于保存要传递的值，这些值可以在运行窗口动作执行后生效，或者是在调用的Python代码方法中生效。
+·confirm用于在运行相关动作之前显示确认消息框，以显示分配给此属性的文本。
+·special='cancel'用于在向导窗口内增加一个取消按钮。
+·icon图标用于显示按钮中的图标图像。可用的图标来自Font Awesome集，应使用相应的CSS类来指定，如icon="fa-question"。
+上文介绍了按钮的属性，我们在12.3节介绍表单视图主体部分的按钮区域时，只介绍了按钮区域的框架，并没有添加具体的按钮，下面就来介绍一种特别的按钮——智能按钮。
+继续前面的例子，我们将添加一个按钮，显示当前bug所有者的bug总数，点击该按钮将会导航到这些bug的列表中。
+首先，可以看到这是一个计算字段，所以我们需要在模型里面添加相应的方法，下面在models/bug_adv.py文件内添加如下字段和方法：
+1.    user_bug_count = fields.Integer(
+2.        '待处理bug总数',
+3.    compute='_compute_user_bug_count')
+4.
+5.    def _compute_user_bug_count(self):
+6.        for task in self:
+7.            task.user_bug_count = task.search_count(
+8.                [('user_id', '=', task.user_id.id)])
+
+然后，在XML文件中添加按钮框和按钮，并在前面已经做好的<sheet>元素内，添加如下代码：
+1.      按钮区域添加在这
+2.     <div name="button_box" class="oe_button_box">
+3.         <button class="oe_stat_button"
+4.           type="action" icon="fa-tasks"
+4.           type="action" icon="fa-tasks"
+5.           name="%(action_bug_button)d"
+6.           context="{'default_user_id': user_id}"
+7.           help="本用户负责的所有bug" >
+8.           <field string="BUGs" name="user_bug_count"
+9.             widget="statinfo"/>
+10.        </button>
+11.    </div>
+
+第1行是我们在12.2节所做的注释语句，本次的代码就添加在注释语句之下。
+第3行到第10行都是对按钮的定义，本按钮将展示用户负责的所有bug数，计算数值可使用对应的usr_bug_count字段。
+下面就将智能按钮可以使用的属性逐一进行介绍。
+·class='oe_start_button'通过该设置使按钮以矩形的形式呈现，而不是常规的按钮形式。
+·icon用于设置要使用的图标，可从Font Awesome集中选择。
+·type和name分别对应按钮类型和要触发的操作的名称。对于智能按钮，type通常是action，name是将要执行的操作的ID。它需要一个实际的数据库ID，因此这里必须使用公式将XML ID转换为数据库ID："%（action-xmlid）d"。此操作会打开包含相关记录的视图。
+·string可为按钮添加文本标签。这里并没有使用它，因为包含的字段已经为它提供了一个文本。
+·context用于在目标视图上设置默认值，以便在点击按钮之后可在创建新记录的视图上使用。
+·help是当按钮悬停时出现的提示信息。
+按钮元素本身是一个容器，其中的字段可显示统计信息。这些统计信息是使用组件statinfo的常规字段。该字段通常是底层模型中定义的计算字段。除了字段，在按钮内部我们也可以使用静态文本，例如<div>User's BUGs</div>。
+点击按钮时，我们希望查看当前用户负责的所有bug的列表。该功能将通过action_bug_button来完成，不过目前我们尚未实现该功能。根据需求分析可以得出，后续需要根据当前用户进行过滤。为此，我们将使用按钮的context属性来存储过滤条件值。
+下面我们就来完成这个动作的定义，不过需要注意的是该动作应在智能按钮之前进行定义，因为我们引用了该动作，所以应在XML文件的上方添加如下代码：
+1.    <act_window id="action_bug_button"
+2.      name="BUGs"
+3.      res_model="bm.bug"
+4.      view_mode="tree,form,calendar,graph,pivot"
+5.      domain="[('user_id','=',default_user_id)]" />
+
+第5行是对domain的使用，请注意我们在这里对default_user_id的使用方式，这种使用方式会在通过点击按钮出现的创建bug窗口上添加该默认值到usr_id字段。
+为了渲染视图的效果，我们有必要专门介绍一下常用的动态属性。
+视图元素支持一些动态属性，这些属性允许视图根据字段值动态更改其外观或行为。可根据可编辑表单上依赖字段的事件触发来调整其他字段上的数据，或者只有在满足某些条件时才使其他字段必须输入或呈现出来。值变触发（on change）机制允许我们在更改特定字段值时关联更改其他表单字段中的值。这点在前面章节中已经有所介绍，此处不再赘述。此处需要特别说明一点的是，计算字段的自动重新计算也可以通过这种机制来完成。
+某些属性允许我们根据记录的值动态更改视图元素的呈现。
+下面就来介绍两种属性，下面这两种属性提供了一种功能可用于控制特定用户界面元素的可见性。
+·groups可以根据当前用户所属的安全组使元素可见。只有指定组的成员才能看到它。如果是多个组，则赋值以逗号分隔的组XML ID列表。
+·states可以根据记录的state字段切换元素的可见性。为该属性赋值以逗号分隔的状态值列表，其仅在模型确实具有state字段时才起作用。
+除此之外，我们还提供了一个灵活的方法用于根据客户端动态评估的表达式设置元素可见性。这就是attrs特殊属性，赋值时可将值作为字典，将invisible属性的值映射到表达式的结果。
+例如，要使close_reason字段在除“已修改”之外的其他值都处于显示状态，那么请使用以下代码：
+1.    <field name="close_reason"
+3.           attrs="{'invisible':[('state', '=', ['已修改'])]}" />
+invisible属性不仅可用于字段，而且还可用于任何元素。例如，我们还可以在notebook和group元素中使用它。
+attrs属性除了可以设置invisible属性之外，还可以为其他两个属性设置值：readonly和required。这两个属性仅对数据字段具有意义，使其不可编辑或设置为必须输入。
+-->
