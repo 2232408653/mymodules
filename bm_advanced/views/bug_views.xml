@@ -45,7 +45,34 @@ clickable属性允许用户通过单击状态栏来更改文档所处的阶段�
 -->
                     </header>
                     <sheet>
+                        <!--工作表（sheet）是放置实际数据元素表单的主要区域。
+                        工作表被设计得看起来像一个实际的纸质文档，并且在Odoo文档中，
+                        工作表通常被称为文档（document）。
+                        文档（sheet）一般具有以下区域。
+                        左上角的文档标题和副标题。
+                        右上角的按钮框。
+                        其他文档主体区域字段。
+                        底部的笔记本，可用于组织成标签页、联系方式或页面的其他字段。-->
+                        <!--（1）标题、副标题
+                        我们一般使用<h1>、<h2>等HTML语言来标记标题、副标题，但是在XML文件中，
+                        如果元素在<group>之外则不会自动产生标签（<label>），
+                        所以我们需要在XML中手动添加<label>。
+                        一般来说，还需要添加一些页面渲染效果，
+                        我们可以将标题部分放到<div>标签内，
+                        并且为该标签引入CSS的类oe_title。-->
                         <!--表单主体内容-->
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only" />
+                            <h1><field name="name" /> </h1>
+                            <h3>
+                                <span class="oe_read_only">创建者</span>
+                                <!--<label>元素用于控制字段标签的显示时间和位置。for属性则标识我们获取标签文本的字段。
+                                读者也可以选择使用string属性来替代for属性，不过，Odoo源码中大多是使用for属性。
+                                示例中还将使用class="oe_edit_only"属性，以使该标签字段仅在编辑模式下可见。-->
+                                <label for="user_id" class="oe_edit_only" />
+                                <field name="user_id" class="oe_inline" />
+                            </h3>
+                        </div>
                     </sheet>
                     <!--联系组件-->
                     <div class="oe_chatter">
