@@ -1,7 +1,10 @@
 <odoo>
     <data>
         <template id="hello" name="Hello Template">
-            <h1>Hello World!</h1>
+<!--            <h1>Hello World!</h1>-->
+            <t t-call="website.layout">
+                <h1>Hello World!</h1>
+            </t>
         </template>
     </data>
 </odoo>

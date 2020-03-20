@@ -7,8 +7,9 @@ class Main(http.Controller):
     @http.route('/helloworld', auth='public')
     def hello_world(self):
         return ('<h1>Hello World!</h1>')
-    @http.route('/hello',auth='public')
+    @http.route('/hello',auth='public',website=True)
     def hello(self,**kwargs):
+        print('suso')
         return request.render('bm_website.hello')
 
 

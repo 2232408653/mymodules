@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['bm_advanced'],
+    'depends': ['bm_advanced','website'],
 
     # always loaded
     'data': [
