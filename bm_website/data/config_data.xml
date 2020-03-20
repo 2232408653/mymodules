@@ -1,15 +1,33 @@
 <odoo>
     <data>
+        <!--由于Odoo的网站插件其通用表单处理得非常开放，并且也会处理客户端发送的不受信任的数据，
+        因此新记录的创建将以sudo模式完成（具有与Admin相同的功能），这就意味着任何人都可以将记录插入数据库。
+        注意
+        出于安全考虑，我们需要通过服务器端的设置来限制对客户端允许执行的操作。
+        因此，接受website_form数据的模型以及可以写入的特定字段列表必须列入白名单。
+        /website_form/<string：model_name>路由是公共的，并且可以将数据插入到已列入白名单的任何模型中。
+        这里可以使用website_form_input_filter()方法进行其他的安全限制，该方法将在本节中详细介绍。
+        若要向此白名单添加字段，则需要提供辅助函数，我们可以从XML数据文件中使用它。
+        这里应该创建bug-website/data/config_data.xml文件：-->
         <record id="ds_bug.model_ds_bug" model="ir.model">
             <field name="website_form_access">True</field>
             <field name="website_form_label">创建Bug</field>
         </record>
+        <!--要想添加网站菜单项，我们只需要在website.menu模型中创建一个记录，
+        其中包含名称、URL和父菜单项的标识符。此菜单的顶级将作为parent.main_menu项目的父级。-->
         <record id="menu_bug" model="website.menu">
             <field name="name">Bug</field>
             <field name="url">/bugs</field>
             <field name="parent_id" ref="website.main_menu"/>
             <field name="sequence" type="int">50</field>
         </record>
+        <!--网站表单允许我们插入自己的验证和计算以进行处理。
+        这是通过使用目标模型上的逻辑以实现website_form_input_filter()方法来完成的。
+        此方法需要一个values参数，参数包含字典，可以执行验证，甚至还可以修改它，
+        然后返回要使用的最终的values字典。
+        我们将利用它来实现两个功能，具体如下。
+            从bug标题中删除前后的空格。
+            确保bug标题的长度至少为三个字符。-->
         <function model="ir.model.fields"
                   name="formbuilder_whitelist">
             <value>ds_bug</value>
