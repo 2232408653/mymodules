@@ -27,7 +27,14 @@
           <field name="name">bug-manage stage window</field>
           <field name="res_model">bm.bug.stage</field>
           <field name="view_mode">tree,form,kanban</field>
-        </record>
+        </record>与下面功能一致
+        这种方式也非常常用，是将act_window作为元素，而不是前面那种以记录的方式向模型中写入，
+        两种方式读者都可以使用，两者之间没有本质的差别。
+        当然我们还可以使用其他的属性，诸如domain和context等，
+        下面就来详细介绍一下窗口动作常用的属性。
+        name是指通过本窗口动作打开的视图的标题。
+        res_model是窗体动作使用的模型名称。
+        view_mode用于声明可用的视图类型及其顺序，第一个是执行动作时默认打开的视图。
         -->
         <act_window id="bm_advanced.action_window_stage"
                     name="bug-manage stage window"
