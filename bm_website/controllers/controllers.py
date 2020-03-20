@@ -1,32 +1,20 @@
 # -*- coding: utf-8 -*-
 from odoo import http
-from odoo.http import request
 
-
-class Main(http.Controller):
-    @http.route('/helloworld', auth='public')
-    def hello_world(self):
-        return ('<h1>Hello World!</h1>')
-    @http.route('/hello',auth='public',website=True)
-    def hello(self,**kwargs):
-        print('suso')
-        return request.render('bm_website.hello')
-
-
-# class BmWebsite(http.Controller):
-#     @http.route('/bm_website/bm_website/', auth='public')
+# class Bm-website(http.Controller):
+#     @http.route('/bm-website/bm-website/', auth='public')
 #     def index(self, **kw):
 #         return "Hello, world"
 
-#     @http.route('/bm_website/bm_website/objects/', auth='public')
+#     @http.route('/bm-website/bm-website/objects/', auth='public')
 #     def list(self, **kw):
-#         return http.request.render('bm_website.listing', {
-#             'root': '/bm_website/bm_website',
-#             'objects': http.request.env['bm_website.bm_website'].search([]),
+#         return http.request.render('bm-website.listing', {
+#             'root': '/bm-website/bm-website',
+#             'objects': http.request.env['bm-website.bm-website'].search([]),
 #         })
 
-#     @http.route('/bm_website/bm_website/objects/<model("bm_website.bm_website"):obj>/', auth='public')
+#     @http.route('/bm-website/bm-website/objects/<model("bm-website.bm-website"):obj>/', auth='public')
 #     def object(self, obj, **kw):
-#         return http.request.render('bm_website.object', {
+#         return http.request.render('bm-website.object', {
 #             'object': obj
 #         })

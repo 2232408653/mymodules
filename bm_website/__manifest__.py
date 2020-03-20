@@ -1,26 +1,25 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "bm_website",
+    'name': "Bug Management Website",
 
     'summary': """
-    bug management Website
-    """,
+        Bug Management Website""",
 
     'description': """
-        bug management Website
+        Bug management Website
     """,
 
     'author': "DS",
-    'website': "https://odoo12.xyz",
+    'website': "http://www.yourcompany.com",
 
     # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/12.0/odoo/addons/base/data/ir_module_category_data.xml
+    # Check https://github.com/odoo/odoo/blob/master/odoo/addons/base/module/module_data.xml
     # for the full list
     'category': 'Uncategorized',
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['bm_advanced','website'],
+    'depends': ['bm_advanced','website_form'],
 
     # always loaded
     'data': [
@@ -28,7 +27,9 @@
         'views/views.xml',
         'views/templates.xml',
         'views/bug_web.xml',
-        'views/bug_extend.xml'
+        'views/bug_extend.xml',
+        'views/bug_templates.xml',
+        'data/config_data.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

@@ -2,8 +2,8 @@
 
 from odoo import models, fields, api
 
-# class bm_website(models.Model):
-#     _name = 'bm_website.bm_website'
+# class bm-website(models.Model):
+#     _name = 'bm-website.bm-website'
 
 #     name = fields.Char()
 #     value = fields.Integer()
