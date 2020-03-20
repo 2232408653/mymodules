@@ -30,7 +30,11 @@ class Main(http.Controller):
     在这种情况下，我们通常需要在上下文中运行部分代码。
     为此，可以使用sudo()模型方法，它能将安全上下文更改为Admin用户，这样就删除了大多数限制。
     '''
-
+    '''
+    请注意，路由使用带有模型（"ds_bug"）转换器的占位符，
+    该转换器将映射到方法的bug参数上。其将从URL捕获bug标识符，
+    可以是简单的ID号或分段标示，并将其转换为相应的浏览记录对象。
+    '''
     @http.route('/bug/<model("ds_bug"):bug>',
                 auth="user",  # 默认为user, 但是我们显示指定
                 website=True)

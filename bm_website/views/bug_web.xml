@@ -3,6 +3,9 @@
         <template id="hello" name="Hello Template">
             <h1>Hello World !</h1>
         </template>
+        <!--这里需要注意<t t-field>元素的用法。
+        它用于处理字段值的正确表示，就像在后端一样。
+        例如，它能正确显示日期值和多对一值。-->
         <template id="detail" name="bug明细">
             <t t-call="website.layout">
                 <div id="wrap" class="container">
