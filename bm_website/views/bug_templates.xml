@@ -9,6 +9,10 @@
           </xpath>
       </template>
       <template id="index" name="Bug List">
+          <!--t-call在website.layout模板中运行XML，
+          并将标记内的完整内容传递给它。
+          website.layout旨在呈现完整的网站页面，包括菜单、页眉、页脚等，
+          并将该内容放在适当的主区域中。-->
           <t t-call="website.layout">
             <div id="wrap" class="container">
               <h1>Bug 列表</h1>
