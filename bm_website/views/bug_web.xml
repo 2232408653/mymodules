@@ -20,7 +20,30 @@
             </t>
         </template>
         <template id="add" name="Add Bug">
+            <!--Odoo特定的<t t-call="website.layout">元素，负责在网站布局中插入模板。-->
             <t t-call="website.layout">
+                <!--第3行还使用<t t-set="additional_title">，
+                其为页面设置了一个额外的标题，这是网站布局的标准功能。
+                对于内容，我们从此模板中可以看到，
+                大部分内容都可以在Bootstrap CSS表单中找到，但这里还有一些特定于网站表单的属性和CSS类。
+                JavaScript代码需要CSS类才能正确执行表单处理逻辑。
+                <form>元素上有一些特定的属性，具体总结如下。
+                    action是HTML标准表单属性，但必须具有"/website_form/"值。尾部斜杠是必需的。
+                    data-model_name用于标识要写入的模型，并将其传递给/website_form控制器。
+                    data-success_page是成功提交表单后重定向到的URL。
+                    在这种情况下，我们将被重定向到/bugs列表。
+我们不需要自己处理表单提交，generic/website_form路由将会做到这一点，
+其从表单中获取所需的所有信息，包括刚才描述的特定属性，对输入数据执行基本验证，
+然后在目标模型上创建新记录。
+如果此时有特殊需求需要进行特别处理，
+那么我们可以强制使用自定义控制器方法替代默认的路由处理方式。
+为此，我们应该向<form>元素添加data-force_action属性，并使用目标控制器的关键字。
+
+
+例如，data-force_action="bug-custom"将使表单提交调用/website_form/bug-custom URL，
+不过，这里应该提供一个附加到该路由的控制器方法。但在本节的示例中，我们不需要自定义控制器，
+并且还将坚持使用由website_form插件模块提供的通用处理。
+                -->
                 <t t-set="additional_title">创建Bug</t>
                 <div id="wrap" class="container">
                     <div class="row">
@@ -33,7 +56,10 @@
                                   data-model_name="ds_bug"
                                   data-success_page="/bugs"
                                   enctype="multipart/form-data">
-
+<!--这段代码中添加了两个字段，
+用于描述常规的文本字段和上传附件的文件字段。
+所有标记都可以在常规的Bootstrap表单中找到，但o_website_form_input类除外，
+其是网站表单逻辑准备要提交的数据所必需的。-->
                                 <!--表单字段放置在这儿! -->
                                 <div class="form-group form-field">
                                     <div class="col-md-3 col-sm-4 text-right">

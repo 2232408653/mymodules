@@ -42,7 +42,10 @@ class Main(http.Controller):
         return http.request.render(
             'bm_website.detail',
             {'bug': bug})
-
+    ''':arg
+    这是一个简单的控制器，生成一个新的自定义bug-website.add模板，
+    并为其提供用户列表，以便它们可用于选择框的构建。
+    '''
     @http.route('/bug/add', auth="user", website=True)
     def add(self, **kwargs):
         users = request.env['res.users'].search([])
