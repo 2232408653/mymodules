@@ -1,220 +1,127 @@
 <odoo>
     <data>
-        <record id="view_form_bug_ui" model="ir.ui.view">
-            <field name="model">ds_bug</field>
-            <field name="priority">15</field>
-            <field name="arch" type="xml">
-                <form>
-                    <header>
-                        <!--按钮、状态等组件-->
-                        <!--文章的头部（header）通常包含文档的生命周期或步骤以及相关的操作按钮。
-                这些操作按钮是常规表单的按钮，可以使用class="oe_highlight"突出显示最重要的阶段或步骤。
-                文档的生命周期在字段上是使用statusbar元素，该元素表示文档在当前所在的生命周期中的点。
-                        这通常是状态（State）选择字段或阶段（Stage）多对一字段。
-                        这两个字段可以在多个Odoo核心模块中找到。
-                        Stage是一个多对一的字段，它的原理是后台可使用支持模型来设置流程的各个步骤。
-                        因此，最终用户可以动态配置它以适应其特定的业务流程，其能够非常完美地支持看板。
-                        State是一个选择列表，其包含一个过程中相当稳定的步骤，
-                        如新建、处理中和完成。最终用户无法配置它，但由于它是静态的，
-                        因此在业务逻辑中使用起来要容易得多。
-                        视图字段甚至对State提供了特殊支持：
-                            states字段属性允许仅在记录处于某些状态时才可供用户使用。
-                        回归Odoo的历史，Stage的引入要晚于State。
-                        目前两者都可以使用，不过从Odoo核心模块的源码来看，趋势是Stage取代State。
-                        但是，如前面所解释的，State仍然能提供Stage不具备的某些功能。
-                        将Stage映射到State，可以产生一加一大于二的效果。-->
-                        <field name="stage" invisible="True" />
-                        <button name="do_close" type="object" string="关闭" attrs="{'invisible':[('stage','in',['draft'])]}"
-                                class="oe_highlight" />
-                        <field name="stage_id"
-                               widget="stage_id"
-                               clickable="True"
-                               options="{'fold_field':'fold'}" />
-                        <!--在这里，我们在状态栏中添加一个关闭按钮，让用户关闭已完成的bug。attrs属性用于使此按钮仅对处于完成状态的bug可见。执行此操作的条件是使用状态字段，该字段将不会显示在表单上。但是，为了使可见性切换的条件起作用，需要在Web客户端用到加载的所有值。由于我们不打算让最终用户能够使用状态字段，因此我们需要将其添加为不可见字段。
-在项目中也需要注意，在domain或attrs表达式中使用的字段必须被加载到视图中，并且必须有一个<field>元素。如果不想让用户看到该字段，那么就将它们加载为一个不可见的字段元素。
-除了上面的显式切换方式，也可以选择使用states=“open，done”，这样就可以通过states字段属性而不是attrs来实现相同的效果。虽然它不像attrs属性那样灵活，但它更为简洁。
-attrs和states元素的可见性功能也可用于其他视图元素，如字段。这将在本章的后面进行深入探讨。
-接下来，添加状态栏组件以显示文档所在的阶段。其实在技术上，它就是为stage_id字段赋值statusbar的<field>元素。
-clickable属性允许用户通过单击状态栏来更改文档所处的阶段。我们一般都会启用此功能，但也有一些业务上不允许的情况，例如当我们需要对工作流程进行更多的控制，并要求用户仅使用可用的操作按钮来完成各个阶段时。也就是说有些时候我们需要经过特定的验证才会允许阶段的变化。
-当使用带有阶段的状态栏组件时，我们可以在更多阶段组中隐藏（折叠）很少使用的阶段。相应的阶段模型必须要有一个标志来配置需要隐藏的标记，其通常命名为fold。然后，状态栏组件应使用options属性（如上面的代码所示），以将此字段名称提供给fold_field选项。
-状态栏也可以与状态（state）而不是阶段（stage）一起使用。在这种情况下，要列出状态栏中可用的状态，应使用statusbar_visible属性而不是fold_field选项。如果将statusbar_visible用于bug表单，那么它的内容将如下所示：
-1.    <field name="state"
-2.      widget="statusbar"
-3.      clickable="True"
-4.      statusbar_visible="draft,open,done" />
--->
-                    </header>
-                    <sheet>
-                        <!--工作表（sheet）是放置实际数据元素表单的主要区域。
-                        工作表被设计得看起来像一个实际的纸质文档，并且在Odoo文档中，
-                        工作表通常被称为文档（document）。
-                        文档（sheet）一般具有以下区域。
-                        左上角的文档标题和副标题。
-                        右上角的按钮框。
-                        其他文档主体区域字段。
-                        底部的笔记本，可用于组织成标签页、联系方式或页面的其他字段。-->
-                        <!--（1）标题、副标题
-                        我们一般使用<h1>、<h2>等HTML语言来标记标题、副标题，但是在XML文件中，
-                        如果元素在<group>之外则不会自动产生标签（<label>），
-                        所以我们需要在XML中手动添加<label>。
-                        一般来说，还需要添加一些页面渲染效果，
-                        我们可以将标题部分放到<div>标签内，
-                        并且为该标签引入CSS的类oe_title。-->
-                        <!--表单主体内容-->
-                        <div class="oe_title">
-                            <label for="name" class="oe_edit_only" />
-                            <h1><field name="name" /> </h1>
-                            <h3>
-                                <span class="oe_read_only">创建者</span>
-                                <!--<label>元素用于控制字段标签的显示时间和位置。for属性则标识我们获取标签文本的字段。
-                                读者也可以选择使用string属性来替代for属性，不过，Odoo源码中大多是使用for属性。
-                                示例中还将使用class="oe_edit_only"属性，以使该标签字段仅在编辑模式下可见。-->
-                                <label for="user_id" class="oe_edit_only" />
-                                <field name="user_id" class="oe_inline" />
-                            </h3>
-                        </div>
-                    </sheet>
-                    <!--联系组件-->
-                    <div class="oe_chatter">
-                        <field name="message_follower_ids" widget="mail_followers" />
-                        <field name="message_ids" widget="mail_thread" />
-                    </div>
-                </form>
-            </field>
-        </record>
+    <record id="view_calendar_bug" model="ir.ui.view">
+      <field name="model">ds_bug</field>
+      <field name="arch" type="xml">
+        <calendar date_start="deadline" color="user_id">
+          <!-- 展示字段定义在这里 -->
+          <field name="name" />
+          <field name="stage_id" />
+        </calendar>
+      </field>
+    </record>
+    <record id="view_graph_bug" model="ir.ui.view">
+      <field name="model">ds_bug</field>
+      <field name="arch" type="xml">
+        <graph type="bar">
+          <field name="name" />
+          <field name="progress" type="measure" />
+        </graph>
+      </field>
+    </record>
+    <record id="view_pivot_bug" model="ir.ui.view">
+      <field name="model">ds_bug</field>
+      <field name="arch" type="xml">
+        <pivot>
+          <field name="stage_id" type="col" />
+          <field name="user_id" type="row"/>
+          <field name="deadline" interval="week" type="row"/>
+          <field name="progress" type="measure" />
+        </pivot>
+      </field>
+    </record>
+    <act_window id="action_bug_button"
+      name="BUGs"
+      res_model="ds_bug"
+      view_mode="tree,form,calendar,graph,pivot"
+      />
+     <!-- domain="[('user_id','=',default_user_id)]" -->
+
+    <record id="view_form_bug_ui"
+      model="ir.ui.view">
+      <field name="model">ds_bug</field>
+      <field name="priority">15</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <!-- 按钮、状态等组件 -->
+              <field name="state" invisible="True" />
+              <button name="do_close" type="object"
+                string="关闭"
+                attrs="{'invisible':[('state', 'in', ['draft'])]}"
+                class="oe_highlight" />
+              <field name="stage_id"
+                widget="statusbar"
+                clickable="True"
+                options="{'fold_field': 'fold'}" />
+          </header>
+          <sheet>
+              <!-- 表单主体内容 -->
+              <!-- 标题、副标题 -->
+              <div name="button_box" class="oe_button_box">
+                  <!-- 按钮区域添加在这 -->
+                  <div name="button_box" class="oe_button_box">
+                      <button class="oe_stat_button"
+                        type="action" icon="fa-tasks"
+                        name="%(action_bug_button)d"
+                        context="{'default_user_id': user_id,'search_default_user_id':user_id}"
+                        help="本用户负责的所有bug" >
+                        <field string="BUGs" name="user_bug_count"
+                          widget="statinfo"/>
+                      </button>
+                  </div>
+              </div>
+              <field name="kanban_state" widget="state_selection" />
+              <div class="oe_title">
+                <label for="name" class="oe_edit_only"/>
+                <h1><field name="name"/></h1>
+                <h3>
+                  <span class="oe_read_only">创建者：</span>
+                  <label for="user_id" class="oe_edit_only"/>
+                  <field name="user_id" class="oe_inline" />
+                </h3>
+              </div>
+              <group name="group_top">
+                  <group name="group_left">
+                    <!-- <field name="user_id" /> -->
+                    <separator string="谁关注此bug" />
+                    <field name="follower_id" />
+                  </group>
+                  <group name="group_right">
+                    <field name="tag_ids" widget="many2many_tags"/>
+                    <field name="progress"/>
+                    <field name="deadline"/>
+                  </group>
+              </group>
+          </sheet>
+          <!-- 联系组件 -->
+          <div class="oe_chatter">
+            <!--
+            <field name="message_follower_ids" widget="mail_followers" />
+            <field name="message_ids" widget="mail_thread" />
+            -->
+          </div>
+        </form>
+      </field>
+    </record>
+    <record id="view_filter_bug"
+      model="ir.ui.view">
+      <field name="model">ds_bug</field>
+      <field name="priority">15</field>
+      <field name="arch" type="xml">
+        <search>
+          <field name="name"/>
+          <field name="user_id"/>
+          <filter name="filter_not_close" string="未关闭"
+            domain="[('is_closed','=',False)]"/>
+          <filter name="filter_close" string="已关闭"
+            domain="[('is_closed','!=',False)]"/>
+
+          <separator/>
+          <filter name="group_user" string="按用户分组"
+            context="{'group_by': 'user_id'}"/>
+        </search>
+      </field>
+    </record>
     </data>
 </odoo>
-<!--不依赖于字段类型的通用属性，具体如下。
-·name标示该字段的数据库名字。
-·string标签文本，模型里面也有这个属性，如果我们在XML内设定该属性，则会覆盖原来模型内的设定。
-·help用于设置字段的提示信息，当鼠标悬停的时候会出现，XML中的设置会覆盖模型中该属性的设定。
-·placeholder表示在输入信息之前在字段内显示的提示文本。
-·widget如果不想使用系统为字段默认设定的展示组件，则可以在属性中进行调整。
-·options本属性用于为字段使用的窗口组件写JSON数据结构，具体要如何编写则应根据使用的显示组件而定。
-class是为字段提供渲染的CSS类。
-·nolabel="True"<group>内的元素是字段添加标签的，如果自己已添加了标签<label for="…">，那么就可以通过该属性禁止自动添加的标签属性。
-·invisible="True"使所在字段不显示。不过字段的数据已经被加载，并且可以使用。
-·readonly="True"使该字段不可编辑。
-·required="True"设置该字段并使其成为必输入项。-->
-<!--
-以上是与字段类型无关的属性，下面再来介绍几个与字段类型相关的属性。
-password="True"文本类型的字段可以使用该属性，设置此属性后字符会以密码的形式显示而不是显示明文。
-filename可用于存储二进制文件上传目的模型的模型名称。
-mode可用于one2many字段，以指定显示记录的视图类型，默认是树。
--->
-<!--
-视图字段的标签。
-<label>元素可用于更好地显示字段标签。很多时候是仅在表单处于编辑模式时显示标签：
-1.    <label for="name" class="oe_edit_only" />
-
-如此使用时，如果该字段位于<group>元素内，那么通常还要在其上设置nolabel="True"。
-在视图字段的使用上，对于关联字段的使用这里还需要单独介绍下。
-在关联字段中，可以对用户的可执行操作进行一些附加的控制。默认情况下，用户可以从这些字段创建新记录（也称为“快捷创建”）并打开相关记录表单。可以使用options字段属性禁用此功能：
-1.    options="{'no_open': True, 'no_create': True}"
-
-上下文（context）和域（domain）也是关联字段可用的属性，而且特别有用。
-context可以定义关联记录的默认值，domain可以限制可选记录。一个常见的示例是为某个字段生成列表选项时，其值取决于另一个字段。字段的domain可以直接在模型中进行定义，也可以在视图中进行定义从而完成覆盖。
-还可以使用mode属性来更改用于显示记录的视图类型。前面提到的默认是树形视图，可通过此属性将其改成表单、看板或图形。
-视图字段除了属性和标签之外，还有一些可用于提升显示效果的组件。
-每个字段类型都有显示时使用的默认组件。但是我们可以手动调整效果组件以替代默认组件。
-对于文本类型的字段，我们可以选择使用如下组件。
-·email可用于对邮件中“发送至”的地址进行显示。
-·url可将文字处理成可以点击的超链接。
-·html可用于将文本呈现为HTML内容。在编辑模式下，它是一个WYSIWYG编辑器，允许格式化内容，而无须使用HTML语法。
-对于数值类型字段，可以选择使用如下组件。
-·handle是专门为列表视图中的序列字段设计的，其将显示一个句柄，允许拖动以调整顺序。
-·float_time格式化浮点字段，时间可以精确到小时和分钟。
-·monetary显示浮点值货币金额。它需要一个currency_id的绑定字段，但另一个字段名称可以通过options="{'currency_field'：'currency_id'}"来提供。
-·progressbar以百分比的形式来展示浮点数，一般可用于完成率等字段。
-对于关联字段和选择字段，我们还提供了如下组件。
-·many2many_tags将值显示为一列按钮标签。
-selection多对一字段使用的选项列表组件。
-·radio选项列表的单项使用按钮。
-·priority将字段值以星级打分的形式展现。
-·state_selection为看板状态的选项列表展示一个信号灯，正常用灰色表示、完成用绿色表示、其他用红色表示。
--->
-<!--
-12.4　按钮
-按钮已在前面多次使用过，现在就来全面地查看一下按钮所支持的属性。
-·string是按钮的文本标签，或者使用图标时的HTML alt文本。
-·type是要执行的操作类型，可能的操作值包括如下两项：
-·object表示调用后台Python方法。
-·action表示要运行一个窗口动作。
-·name可根据所选的type类型标识要执行的对应操作：type为object时代表模型方法名称，type为action时则表示要运行的窗口动作的数据库ID。在加载视图时，%（xmlid）d公式可用于将XML ID转换为所需的数据库ID。
-·args在type为object时使用，其用于向后台方法传递参数。参数是依据记录ID提前生成的静态JSON参数。
-·context用于保存要传递的值，这些值可以在运行窗口动作执行后生效，或者是在调用的Python代码方法中生效。
-·confirm用于在运行相关动作之前显示确认消息框，以显示分配给此属性的文本。
-·special='cancel'用于在向导窗口内增加一个取消按钮。
-·icon图标用于显示按钮中的图标图像。可用的图标来自Font Awesome集，应使用相应的CSS类来指定，如icon="fa-question"。
-上文介绍了按钮的属性，我们在12.3节介绍表单视图主体部分的按钮区域时，只介绍了按钮区域的框架，并没有添加具体的按钮，下面就来介绍一种特别的按钮——智能按钮。
-继续前面的例子，我们将添加一个按钮，显示当前bug所有者的bug总数，点击该按钮将会导航到这些bug的列表中。
-首先，可以看到这是一个计算字段，所以我们需要在模型里面添加相应的方法，下面在models/bug_adv.py文件内添加如下字段和方法：
-1.    user_bug_count = fields.Integer(
-2.        '待处理bug总数',
-3.    compute='_compute_user_bug_count')
-4.
-5.    def _compute_user_bug_count(self):
-6.        for task in self:
-7.            task.user_bug_count = task.search_count(
-8.                [('user_id', '=', task.user_id.id)])
-
-然后，在XML文件中添加按钮框和按钮，并在前面已经做好的<sheet>元素内，添加如下代码：
-1.      按钮区域添加在这
-2.     <div name="button_box" class="oe_button_box">
-3.         <button class="oe_stat_button"
-4.           type="action" icon="fa-tasks"
-4.           type="action" icon="fa-tasks"
-5.           name="%(action_bug_button)d"
-6.           context="{'default_user_id': user_id}"
-7.           help="本用户负责的所有bug" >
-8.           <field string="BUGs" name="user_bug_count"
-9.             widget="statinfo"/>
-10.        </button>
-11.    </div>
-
-第1行是我们在12.2节所做的注释语句，本次的代码就添加在注释语句之下。
-第3行到第10行都是对按钮的定义，本按钮将展示用户负责的所有bug数，计算数值可使用对应的usr_bug_count字段。
-下面就将智能按钮可以使用的属性逐一进行介绍。
-·class='oe_start_button'通过该设置使按钮以矩形的形式呈现，而不是常规的按钮形式。
-·icon用于设置要使用的图标，可从Font Awesome集中选择。
-·type和name分别对应按钮类型和要触发的操作的名称。对于智能按钮，type通常是action，name是将要执行的操作的ID。它需要一个实际的数据库ID，因此这里必须使用公式将XML ID转换为数据库ID："%（action-xmlid）d"。此操作会打开包含相关记录的视图。
-·string可为按钮添加文本标签。这里并没有使用它，因为包含的字段已经为它提供了一个文本。
-·context用于在目标视图上设置默认值，以便在点击按钮之后可在创建新记录的视图上使用。
-·help是当按钮悬停时出现的提示信息。
-按钮元素本身是一个容器，其中的字段可显示统计信息。这些统计信息是使用组件statinfo的常规字段。该字段通常是底层模型中定义的计算字段。除了字段，在按钮内部我们也可以使用静态文本，例如<div>User's BUGs</div>。
-点击按钮时，我们希望查看当前用户负责的所有bug的列表。该功能将通过action_bug_button来完成，不过目前我们尚未实现该功能。根据需求分析可以得出，后续需要根据当前用户进行过滤。为此，我们将使用按钮的context属性来存储过滤条件值。
-下面我们就来完成这个动作的定义，不过需要注意的是该动作应在智能按钮之前进行定义，因为我们引用了该动作，所以应在XML文件的上方添加如下代码：
-1.    <act_window id="action_bug_button"
-2.      name="BUGs"
-3.      res_model="bm.bug"
-4.      view_mode="tree,form,calendar,graph,pivot"
-5.      domain="[('user_id','=',default_user_id)]" />
-
-第5行是对domain的使用，请注意我们在这里对default_user_id的使用方式，这种使用方式会在通过点击按钮出现的创建bug窗口上添加该默认值到usr_id字段。
-为了渲染视图的效果，我们有必要专门介绍一下常用的动态属性。
-视图元素支持一些动态属性，这些属性允许视图根据字段值动态更改其外观或行为。可根据可编辑表单上依赖字段的事件触发来调整其他字段上的数据，或者只有在满足某些条件时才使其他字段必须输入或呈现出来。值变触发（on change）机制允许我们在更改特定字段值时关联更改其他表单字段中的值。这点在前面章节中已经有所介绍，此处不再赘述。此处需要特别说明一点的是，计算字段的自动重新计算也可以通过这种机制来完成。
-某些属性允许我们根据记录的值动态更改视图元素的呈现。
-下面就来介绍两种属性，下面这两种属性提供了一种功能可用于控制特定用户界面元素的可见性。
-·groups可以根据当前用户所属的安全组使元素可见。只有指定组的成员才能看到它。如果是多个组，则赋值以逗号分隔的组XML ID列表。
-·states可以根据记录的state字段切换元素的可见性。为该属性赋值以逗号分隔的状态值列表，其仅在模型确实具有state字段时才起作用。
-除此之外，我们还提供了一个灵活的方法用于根据客户端动态评估的表达式设置元素可见性。这就是attrs特殊属性，赋值时可将值作为字典，将invisible属性的值映射到表达式的结果。
-例如，要使close_reason字段在除“已修改”之外的其他值都处于显示状态，那么请使用以下代码：
-1.    <field name="close_reason"
-3.           attrs="{'invisible':[('state', '=', ['已修改'])]}" />
-invisible属性不仅可用于字段，而且还可用于任何元素。例如，我们还可以在notebook和group元素中使用它。
-attrs属性除了可以设置invisible属性之外，还可以为其他两个属性设置值：readonly和required。这两个属性仅对数据字段具有意义，使其不可编辑或设置为必须输入。
--->
-<!--
-12.5　看板视图
-看板视图的英文是kanban，中国读者肯定会感觉其非常像我们的拼音，那是因为这个词来自于日本，最早是由丰田公司使用的，目前已广泛应用于多个领域。
-看板允许我们按阶段可视化查看工作，不同阶段的工作将放在不同的列之上。新工作项从最左边的列开始，然后按照阶段的变化穿过各列，直到它们到达最右边的列，至此即表示已完成的工作。
-使用看板视图能够非常方便地展示简单的业务流程，比如bug处理的不同阶段。如果是配合主子流程的业务，则需要我们自己去扩展。
-下面就让我们通过具体的示例来看一下看板的用法。
-下面就为bug管理应用创建看板视图，每一个bug将会用一个卡片来表示，整个看板将按照阶段分为数列，而卡片则会放在不同的列上。列将根据模型中的stage_id字段来进行划分。
-看板视图与前面的表单视图在使用上也有明显的不同，表单视图是以XML元素为主的，比如<field>和<group>等，使用HTML的元素比较少。但是我们在看板视图中将主要使用HTML元素，使用的XML元素仅为<field>和<button>两个。
-Web客户端中呈现的最终HTML是从QWeb模板动态生成的。QWeb引擎可处理特定的XML标记和属性，并生成对应的HTML。这样就可以更好地控制要显示的内容，但这也使得视图设计更加复杂。
-看板视图的设计非常灵活，我们在此只介绍比较基础的设计方法。如果读者在实战项目中用到了看板视图，那么最好的方法就是在Odoo源码中搜索kanban，并选择自己喜欢的风格，然后以此为模板进行修改。
-下面先来介绍源码中读者会经常遇到的两种非常典型的看板。
-一种是卡片列表，联系人、产品等都提供了这种方式的看板，而且我们在更新应用的时候看到的应用也是这种方式，
-
--->

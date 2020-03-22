@@ -11,7 +11,31 @@ class BugAdvanced(models.Model):
     name = fields.Char(help='简要描述发现的bug')
     stage_id = fields.Many2one('bm_bug_stage', '阶段')
     tag_ids = fields.Many2many('bm_bug_tag', string='标示')
-
+    deadline = fields.Date('最晚解决日期')
+    progress = fields.Integer('进度')
+    state = fields.Selection([('draft', '草稿'), ('submit', '提交')])
+    user_bug_count=fields.Integer(
+        '待处理bug总数',
+        compute='_compute_user_bug_count'
+    )
+    priority = fields.Selection(
+        [('0', '低'),
+         ('1', '中'),
+         ('2', '高')],
+        '优先级',
+        default='1')
+    kanban_state = fields.Selection(
+        [('normal', '处理中'),
+         ('delay', '逾期'),
+         ('done', '本阶段完成')],
+        '看板状态',
+        default='normal')
+    color = fields.Integer('颜色')
+    def _compute_user_bug_count(self):
+        for task in self:
+            task.user_bug_count=task.search_count(
+                [{'user_id','=',task.user_id.id}]
+            )
     @api.onchange('user_id')
     def user_follower_ref(self):
         if not self.user_id:

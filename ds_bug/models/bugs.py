@@ -12,6 +12,7 @@ class bug(models.Model):
     close_reason = fields.Selection([('changed', '已修改'), ('cannot', '无法修改'), ('delay', '推迟')], string='关闭理由')
     user_id = fields.Many2one('res.users', string='负责人')
     follower_id = fields.Many2one('res.partner', string="关注者")
+    #deadline = fields.Date('最晚解决日期')
     '''
     _name:类的唯一标识字段,其它类可以通过此字段引用本类
     _description:类似于标签,提高查询的友好性
