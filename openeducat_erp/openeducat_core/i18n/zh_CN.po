@@ -49,7 +49,7 @@ msgstr "<BR/>\n"
 #. module: openeducat_core
 #: model_terms:ir.ui.view,arch_db:openeducat_core.report_student_bonafide
 msgid "<font color=\"white\"/> is / was a bonafide student of this school / college studying in"
-msgstr "<字体颜色=“白色” />是/是这个学校/大学的一位诚实的学生在研究"
+msgstr "<字体颜色=“白色” />是/是这个学校/大学的一位真正的学生在研究"
 
 #. module: openeducat_core
 #: model_terms:ir.ui.view,arch_db:openeducat_core.report_student_bonafide
@@ -668,7 +668,7 @@ msgstr "课程注册"
 #: code:addons/openeducat_core/models/subject_registration.py:80
 #, python-format
 msgid "Course not found on student's admission!"
-msgstr "当然不是对学生的录取找到了！"
+msgstr "学生不在课程里！"
 
 #. module: openeducat_core
 #: model:ir.actions.act_window,name:openeducat_core.act_open_op_course_view
@@ -1844,7 +1844,7 @@ msgstr "价格表"
 #: model:ir.ui.menu,name:openeducat_core.menu_op_faculty_details
 #: model:ir.ui.menu,name:openeducat_core.menu_op_student_main_student
 msgid "Profile"
-msgstr "轮廓"
+msgstr "概述"
 
 #. module: openeducat_core
 #. openerp-web
@@ -2419,7 +2419,7 @@ msgstr "签证信息"
 #. module: openeducat_core
 #: model:ir.model.fields,field_description:openeducat_core.field_wizard_op_faculty_employee__user_boolean
 msgid "Want to create user too ?"
-msgstr "想太多创建用户？"
+msgstr "想创建用户？"
 
 #. module: openeducat_core
 #: model:ir.model.fields,field_description:openeducat_core.field_op_faculty__website
