@@ -1,0 +1,2 @@
+注意 创建完视图及时将视图路径添加进入__mainifest__.py中
+     创建完python文件(包括但不限于models),及时导入__init__中
