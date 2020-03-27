@@ -1,0 +1,6 @@
+脚手架创建新项目 ./odoo-bin scaffold bug-manage my-modules
+注:
+    ./为Linux下使用,因为odoo-bin第一行有选择注释,通用情况为 python odoo-bin
+    scaffold 脚手架,创建新项目需要使用,可快捷创建,当然,直接复制粘贴也可以
+    第一个参数为项目包名,当然也默认赋值给了项目名
+    第二个参数为项目所在目录,也就是在这一目录下创建了一个新文件夹bug-manage
